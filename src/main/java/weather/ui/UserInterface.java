@@ -3,38 +3,68 @@ package weather.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
+import tk.plogitech.darksky.forecast.GeoCoordinates;
+import tk.plogitech.darksky.forecast.model.Latitude;
+import tk.plogitech.darksky.forecast.model.Longitude;
 import weather.ctrl.WeatherController;
 
 public class UserInterface 
 {
 
 	private WeatherController ctrl = new WeatherController();
+	private Longitude x;
+	private Latitude y;
+	//GeoCoordinates location;
 
 	public void getWeatherForCity1(){
-		
-		//TODO enter the coordinates 
-		ctrl.process(null);
+		this.x = new Longitude(25.0);
+		this.y = new Latitude(18.0);
+		//DONE enter the coordinates
+		ctrl.process(ctrl.getLocation(this.x,this.y));
 
 	}
 
 	public void getWeatherForCity2(){
-		//TODO enter the coordinates 
-		ctrl.process(null);
+		//DONE enter the coordinates
+		this.x = new Longitude(35.0);
+		this.y = new Latitude(20.0);
+		ctrl.process(ctrl.getLocation(this.x,this.y));
 
 	}
 
 	public void getWeatherForCity3(){
-		//TODO enter the coordinates 
-		ctrl.process(null);
+		//DONE enter the coordinates
+		this.x = new Longitude(45.0);
+		this.y = new Latitude(40.0);
+		ctrl.process(ctrl.getLocation(this.x,this.y));
 
 }
 	
 	public void getWeatherByCoordinates() {
-		//TODO read the coordinates from the cmd
-		//TODO enter the coordinates 
-		ctrl.process(null);
+		//DONE read the coordinates from the cmd
+		//DONE enter the coordinates
+		System.out.println("Please enter longitude:");
+		Scanner enter_longitude = new Scanner(System.in);
+		double enter_long = enter_longitude.nextDouble();
+		Longitude longitude_console = new Longitude(enter_long);
+
+		System.out.println("Please enter latitude:");
+		Scanner enter_latitude = new Scanner(System.in);
+		double enter_lat = enter_latitude.nextDouble();
+		Latitude latitude_console = new Latitude(enter_lat);
+
+		GeoCoordinates console = new GeoCoordinates(longitude_console, latitude_console);
+
+		ctrl.process(console);
 		
+	}
+
+	@Override
+	public String toString() {
+		return "highest temp: " + ctrl.getHighestTemp(ctrl.getLocation(this.x, this.y)) +
+				"average temp: " + ctrl.getAverageTemp(ctrl.getLocation(this.x, this.y));
 	}
 
 	public void start() {
