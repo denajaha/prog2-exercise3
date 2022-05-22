@@ -12,10 +12,10 @@ import java.util.List;
 
 public class WeatherController {
     
-    private String apiKey = "ab5c55091bfde0864c41b337f1c66af5";;
+    public static String apiKey = "ab5c55091bfde0864c41b337f1c66af5";
     private DarkSkyJacksonClient client = new DarkSkyJacksonClient();
 
-    public void process(GeoCoordinates location) {
+    public void process(GeoCoordinates location) throws MyException {
         System.out.println("process "+location); //$NON-NLS-1$
 		//Forecast data = getData();
 
@@ -33,26 +33,28 @@ public class WeatherController {
 		// implement a Comparator for the Windspeed
 		
 	}
-    public Forecast try_catch_test(DarkSkyJacksonClient client, ForecastRequest forecastRequest) {
-        Forecast forecast = new Forecast();
+    public Forecast try_catch_test(DarkSkyJacksonClient client, ForecastRequest forecastRequest) throws MyException {
+        Forecast forecast;
         try {
             forecast = client.forecast(forecastRequest);
 
         }
         catch (Exception e) {
             System.out.println("try_catch_test error");
+            System.out.println("trying again....:");
+            throw new MyException("API connection error");
+
         }
         return forecast;
     }
     public ForecastRequest apiRequest(String apiKey, GeoCoordinates location) {
-        ForecastRequest request = new ForecastRequestBuilder()
+
+        return new ForecastRequestBuilder()
                 .key(new APIKey("ab5c55091bfde0864c41b337f1c66af5"))
                 .location(location)
                 .build();
-
-        return request;
     }
-    public Double getHighestTemp(GeoCoordinates location) {
+    public Double getHighestTemp(GeoCoordinates location) throws MyException {
 
         DarkSkyJacksonClient client = new DarkSkyJacksonClient();
         Forecast forecast = try_catch_test(client,apiRequest(apiKey,location));
@@ -61,7 +63,7 @@ public class WeatherController {
         return dailyDataPoints.stream().mapToDouble(DailyDataPoint::getTemperatureHigh).max().orElseThrow();
     }
 
-    public Double getAverageTemp(GeoCoordinates location) {
+    public Double getAverageTemp(GeoCoordinates location) throws MyException {
 
         DarkSkyJacksonClient client = new DarkSkyJacksonClient();
         Forecast forecast = try_catch_test(client,apiRequest(apiKey,location));
@@ -83,7 +85,7 @@ public class WeatherController {
         Latitude y = new Latitude(18.0);
 
         GeoCoordinates location = wc.getLocation(x,y);
-        System.out.println(wc.getHighestTemp(location));
-        System.out.println(wc.getAverageTemp(location));
+       // System.out.println(wc.getHighestTemp(location));
+      //  System.out.println(wc.getAverageTemp(location));
     }
 }

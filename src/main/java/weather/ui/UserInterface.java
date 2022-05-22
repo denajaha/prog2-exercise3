@@ -8,6 +8,7 @@ import java.util.Scanner;
 import tk.plogitech.darksky.forecast.GeoCoordinates;
 import tk.plogitech.darksky.forecast.model.Latitude;
 import tk.plogitech.darksky.forecast.model.Longitude;
+import weather.ctrl.MyException;
 import weather.ctrl.WeatherController;
 
 public class UserInterface 
@@ -22,27 +23,39 @@ public class UserInterface
 		this.x = new Longitude(25.0);
 		this.y = new Latitude(18.0);
 		//DONE enter the coordinates
-		ctrl.process(ctrl.getLocation(this.x,this.y));
+		try {
+			ctrl.process(ctrl.getLocation(this.x,this.y));
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public void getWeatherForCity2(){
+	public void getWeatherForCity2() {
 		//DONE enter the coordinates
 		this.x = new Longitude(35.0);
 		this.y = new Latitude(20.0);
-		ctrl.process(ctrl.getLocation(this.x,this.y));
+		try {
+			ctrl.process(ctrl.getLocation(this.x,this.y));
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public void getWeatherForCity3(){
+	public void getWeatherForCity3() {
 		//DONE enter the coordinates
 		this.x = new Longitude(45.0);
 		this.y = new Latitude(40.0);
-		ctrl.process(ctrl.getLocation(this.x,this.y));
+		try {
+			ctrl.process(ctrl.getLocation(this.x,this.y));
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
 
-}
+	}
 	
-	public void getWeatherByCoordinates() {
+	public void getWeatherByCoordinates()   {
 		//DONE read the coordinates from the cmd
 		//DONE enter the coordinates
 		System.out.println("Please enter longitude:");
@@ -57,15 +70,15 @@ public class UserInterface
 
 		GeoCoordinates console = new GeoCoordinates(longitude_console, latitude_console);
 
-		ctrl.process(console);
-		
+		try {
+			ctrl.process(console);
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
+
 	}
 
-	@Override
-	public String toString() {
-		return "highest temp: " + ctrl.getHighestTemp(ctrl.getLocation(this.x, this.y)) +
-				"average temp: " + ctrl.getAverageTemp(ctrl.getLocation(this.x, this.y));
-	}
+
 
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("Weather Infos");
@@ -90,6 +103,7 @@ public class UserInterface
 		try {
 			value = inReader.readLine();
 		} catch (IOException e) {
+			System.out.println(e);
 		}
 		return value.trim();
 	}
